@@ -17,6 +17,7 @@ int getPrior(char c) {
     case '/':
         return 3;
     }
+    return -1;
 }
 std::string infx2pstfx(std::string inf) {
     TStack<char, 100> operations;
