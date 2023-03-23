@@ -23,7 +23,6 @@ class TStack {
             throw std::string("emp");
         else
             return arr[head--];
-
     }
     const T& Get() {
         if (IsEmpty())
