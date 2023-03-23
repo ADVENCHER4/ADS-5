@@ -59,7 +59,7 @@ std::string infx2pstfx(std::string inf) {
     }
     while (!ops.IsEmpty()) {
         res += ops.Pop();
-        if(!ops.IsEmpty()) res += " ";
+        if (!ops.IsEmpty()) res += " ";
     }
     return res;
 }
