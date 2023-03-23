@@ -1,6 +1,6 @@
+#include <ctype.h>
 #include <string>
 #include <map>
-#include <ctype.h>
 #include "tstack.h"
 int getPrior(char c) {
     switch (c) {
@@ -24,13 +24,17 @@ std::string infx2pstfx(std::string inf) {
     for (int i = 0; i < inf.length(); i++) {
         if (isdigit(inf[i])) {
             num += inf[i];
-        } else { // операция
+        }
+        else { // операция
             if (num.length() > 0) {
-                num += " ";
                 res += num;
+                res += " ";
                 num = "";
             }
-            if (inf[i] == '(' || operations.IsEmpty() || getPrior(inf[i]) > getPrior(operations.Get())) operations.Push(inf[i]);
+            if (inf[i] == '(' || operations.IsEmpty() ||
+                getPrior(inf[i]) > getPrior(operations.Get())) {
+                operations.Push(inf[i]);
+            }
             else if (inf[i] == ')') {
                 char sim = operations.Pop();
                 while (sim != '(') {
@@ -38,11 +42,20 @@ std::string infx2pstfx(std::string inf) {
                     res += " ";
                     sim = operations.Pop();
                 }
-            } else if (getPrior(inf[i]) <= getPrior(operations.Get())) {
-                while (getPrior(inf[i]) <= getPrior(operations.Get())) res += operations.Pop();
+            }
+            else if (getPrior(inf[i]) <= getPrior(operations.Get())) {
+                while (getPrior(inf[i]) <= getPrior(operations.Get())) {
+                    res += operations.Pop();
+                    res += " ";
+                }
                 operations.Push(inf[i]);
             }
         }
+    }
+    if (num.length() > 0) {
+        res += num;
+        res += " ";
+        num = "";
     }
     while (!operations.IsEmpty()) {
         res += operations.Pop();
@@ -59,12 +72,14 @@ int eval(std::string pref) {
     {
         if (isdigit(pref[i])) {
             num += pref[i];
-        } else if (pref[i] == ' ') {
+        }
+        else if (pref[i] == ' ') {
             if (num.length() > 0) {
                 nums.Push(stoi(num));
                 num = "";
             }
-        } else {
+        }
+        else {
             int semiRes = 0;
             second = nums.Pop();
             first = nums.Pop();
