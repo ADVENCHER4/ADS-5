@@ -3,7 +3,7 @@
 #include <string>
 #include <map>
 #include "tstack.h"
-int getPrior(char c) {
+int getPr(char c) {
     switch (c) {
     case '(':
         return 0;
@@ -21,7 +21,7 @@ int getPrior(char c) {
     return -1;
 }
 std::string infx2pstfx(std::string inf) {
-    TStack<char, 100> operations;
+    TStack<char, 100> ops;
     std::string res, num;
     for (int i = 0; i < inf.length(); i++) {
         if (isdigit(inf[i])) {
@@ -32,23 +32,23 @@ std::string infx2pstfx(std::string inf) {
                 res += " ";
                 num = "";
             }
-            if (inf[i] == '(' || 
-                operations.IsEmpty() ||
-                getPrior(inf[i]) > getPrior(operations.Get())) {
-                operations.Push(inf[i]);
+            if (inf[i] == '(' ||
+                ops.IsEmpty() ||
+                getPr(inf[i]) > getPr(ops.Get())) {
+                ops.Push(inf[i]);
             } else if (inf[i] == ')') {
-                char sim = operations.Pop();
+                char sim = ops.Pop();
                 while (sim != '(') {
                     res += sim;
                     res += " ";
-                    sim = operations.Pop();
+                    sim = ops.Pop();
                 }
             } else {
-                while (!operations.IsEmpty() && getPrior(inf[i]) <= getPrior(operations.Get())) {
-                    res += operations.Pop();
+                while (!ops.IsEmpty() && getPr(inf[i]) <= getPr(ops.Get())) {
+                    res += ops.Pop();
                     res += " ";
                 }
-                operations.Push(inf[i]);
+                ops.Push(inf[i]);
             }
         }
     }
@@ -57,9 +57,9 @@ std::string infx2pstfx(std::string inf) {
         res += " ";
         num = "";
     }
-    while (!operations.IsEmpty()) {
-        res += operations.Pop();
-        res += " ";
+    while (!ops.IsEmpty()) {
+        res += ops.Pop();
+        if(!ops.IsEmpty()) res += " ";
     }
     return res;
 }
@@ -68,8 +68,7 @@ int eval(std::string pref) {
     int first = 0, second = 0;
     std::string num;
     TStack<int, 100> nums;
-    for (int i = 0; i < pref.length(); i++)
-    {
+    for (int i = 0; i < pref.length(); i++) {
         if (isdigit(pref[i])) {
             num += pref[i];
         } else if (pref[i] == ' ') {
