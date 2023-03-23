@@ -10,13 +10,17 @@ private:
 public:
     TStack() :head(-1) {}
     void Push(T val) {
-        if (!IsFull()) arr[++head] = val;
+        if (IsFull()) throw std::string("full");
+        else arr[++head] = val;
     }
     const T Pop() {
-        if (!IsEmpty()) return arr[head--];
+        if (IsEmpty()) throw std::string("emp");
+        else return arr[head--];
+
     }
     const T Get() {
-        return arr[head];
+        if (IsEmpty()) throw std::string("emp");
+        else return arr[head];
     }
     bool IsFull() const {
         return head == size - 1;
