@@ -3,6 +3,7 @@
 #define INCLUDE_TSTACK_H_
 
 template<typename T, int size>
+class TStack {
 private:
     T arr[size];
     int head;
@@ -11,11 +12,11 @@ public:
     void Push(T val) {
         if (!IsFull()) arr[++head] = val;
     }
-    const T& Pop() {
+    const T Pop() {
         if (!IsEmpty()) return arr[head--];
     }
-    const T& Get() { 
-        return arr[head]; 
+    const T Get() {
+        return arr[head];
     }
     bool IsFull() const {
         return head == size - 1;
